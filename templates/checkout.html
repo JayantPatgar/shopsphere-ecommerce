@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block title %}Delivery details{% endblock %}
+{% block content %}
+<section class="page-heading"><span class="eyebrow muted-eyebrow">CHECKOUT</span><h1>Delivery details</h1><p>Enter where you'd like your order delivered.</p></section>
+<div class="checkout-layout">
+  <form method="post" action="{{ url_for('checkout', product_id=direct_product.id, quantity=direct_quantity) if direct_product else url_for('checkout') }}" class="checkout-form form-stack">
+    {% if direct_product %}<input type="hidden" name="product_id" value="{{ direct_product.id }}"><input type="hidden" name="quantity" value="{{ direct_quantity }}">{% endif %}
+    <h2>Customer and address</h2>
+    <label>Full name<input type="text" value="{{ current_user.name }}" readonly></label>
+    <label>Phone number<input type="tel" name="customer_phone" required maxlength="30" autocomplete="tel" placeholder="Enter contact number" value="{{ submitted.get('customer_phone', '') if submitted else '' }}"></label>
+    <label>Address line 1 <input type="text" name="address_line1" required maxlength="255" autocomplete="address-line1" placeholder="House number, street, area" value="{{ submitted.get('address_line1', '') if submitted else '' }}"></label>
+    <label>Address line 2 (optional)<input type="text" name="address_line2" maxlength="255" autocomplete="address-line2" placeholder="Apartment, landmark (optional)" value="{{ submitted.get('address_line2', '') if submitted else '' }}"></label>
+    <div class="checkout-fields-row"><label>City<input type="text" name="city" required maxlength="100" autocomplete="address-level2" value="{{ submitted.get('city', '') if submitted else '' }}"></label><label>State<input type="text" name="state" required maxlength="100" autocomplete="address-level1" value="{{ submitted.get('state', '') if submitted else '' }}"></label></div>
+    <label>PIN code<input type="text" name="postal_code" required maxlength="20" autocomplete="postal-code" inputmode="numeric" placeholder="PIN code" value="{{ submitted.get('postal_code', '') if submitted else '' }}"></label>
+    <label>Delivery instructions (optional)<textarea name="delivery_instructions" rows="3" maxlength="1000" placeholder="Any helpful delivery information">{{ submitted.get('delivery_instructions', '') if submitted else '' }}</textarea></label>
+    <button class="btn btn-dark btn-wide" type="submit">Place order <span>→</span></button>
+    <p class="summary-note">Demo checkout only. No real payment is processed.</p>
+  </form>
+  <aside class="order-summary"><h2>Order summary</h2>{% for product, quantity in checkout_items %}<div class="checkout-summary-item"><img src="{{ product.image_url }}" alt="{{ product.name }}" onerror="this.onerror=null;this.src='https://placehold.co/100x100/f1f5f9/64748b?text=Item'"><div><strong>{{ product.name }}</strong><small>Qty {{ quantity }} × ₹{{ '%.2f'|format(product.price|float) }}</small></div></div>{% endfor %}<div class="summary-total"><span>Total</span><strong>₹{{ '%.2f'|format(total) }}</strong></div><a class="continue-shopping" href="{{ url_for('cart') if not direct_product else url_for('product_detail', product_id=direct_product.id) }}">← Go back</a></aside>
+</div>
+{% endblock %}

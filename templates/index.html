@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Discover products{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy"><span class="eyebrow"><span class="eyebrow-dot"></span> YOUR EVERYDAY MARKETPLACE</span><h1>Find your next<br><span>favourite thing.</span></h1><p>Good finds for your everyday life. Explore the collection and make your space a little more you.</p><a class="btn btn-light" href="#products">Explore collection <span aria-hidden="true">↗</span></a><div class="hero-note"><span class="mini-avatars">● ● ●</span> <span>Fresh picks, updated regularly</span></div></div>
+  <div class="hero-visual"><div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div><div class="hero-product-card"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85" alt="Red sneaker"><div class="floating-tag"><span class="tag-spark">✦</span><div><strong>Made for your day</strong><small>Discover something new</small></div></div></div><div class="hero-sticker">GOOD<br>THINGS<br>INSIDE <span>↘</span></div></div>
+</section>
+<section class="catalog-section" id="products">
+  <div class="section-heading"><div><span class="eyebrow muted-eyebrow">THE COLLECTION</span><h2>Shop the latest</h2><p class="section-subtitle">A little something for every kind of day.</p></div><span class="result-count">{{ products|length }} item{% if products|length != 1 %}s{% endif %}</span></div>
+  <form class="filter-bar" method="get" action="{{ url_for('index') }}">
+    <label class="search-box"><span>⌕</span><input type="search" name="q" value="{{ q }}" placeholder="Search products..." aria-label="Search products"></label>
+    <select name="category" aria-label="Filter by category"><option value="">All categories</option>{% for cat in categories %}<option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>{% endfor %}</select>
+    <button class="btn btn-dark btn-filter" type="submit">Find items</button>
+    {% if q or selected_category %}<a class="clear-filter" href="{{ url_for('index') }}">Clear</a>{% endif %}
+  </form>
+  {% if products %}
+  <div class="product-grid">
+    {% for product in products %}
+    <article class="product-card">
+      <a class="product-image-link" href="{{ url_for('product_detail', product_id=product.id) }}"><div class="product-image"><img src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x500/f1f5f9/64748b?text=Image+unavailable'">{% if product.stock == 0 %}<span class="stock-badge sold-out">Sold out</span>{% elif product.stock < 5 %}<span class="stock-badge">Only {{ product.stock }} left</span>{% endif %}</div></a>
+      <div class="product-info"><span class="product-category">{{ product.category }}</span><a class="product-name" href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a><div class="product-bottom"><strong class="price">₹{{ '%.2f'|format(product.price|float) }}</strong>{% if product.stock > 0 %}<form method="post" action="{{ url_for('add_to_cart', product_id=product.id) }}"><input type="hidden" name="quantity" value="1"><button class="add-button" type="submit" aria-label="Add {{ product.name }} to cart">+</button></form>{% else %}<button class="add-button disabled" disabled>–</button>{% endif %}</div></div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state"><div class="empty-icon">⌕</div><h3>No products found</h3><p>Try another search or category. If you're setting up the demo, add sample products from the terminal.</p><a class="btn btn-dark" href="{{ url_for('index') }}">View all products</a></div>
+  {% endif %}
+</section>
+<section class="bottom-promo"><div class="promo-icon">✦</div><div><h3>A smoother way to shop.</h3><p>Keep your cart close and your order updates in one place.</p></div><a href="{{ url_for('orders') if current_user else url_for('register') }}" class="promo-link">{{ 'Track your orders' if current_user else 'Join ShopSphere' }} <span>→</span></a></section>
+{% endblock %}

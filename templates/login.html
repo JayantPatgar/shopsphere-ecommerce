@@ -1,0 +1,69 @@
+
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+<section class="auth-layout">
+    <div class="auth-art">
+        <span class="eyebrow">WELCOME BACK</span>
+        <h1>Your next great find is just around the corner.</h1>
+        <p>Sign in to pick up where you left off.</p>
+        <div class="auth-art-shape shape-a"></div>
+        <div class="auth-art-shape shape-b"></div>
+        <div class="auth-art-caption">SHOP A LITTLE HAPPIER ✦</div>
+    </div>
+
+    <div class="auth-panel">
+        <div class="auth-form-wrap">
+            <span class="eyebrow muted-eyebrow">YOUR ACCOUNT</span>
+            <h2>Welcome back</h2>
+            <p class="form-intro">
+                Enter your details to sign in to your account.
+            </p>
+
+            <form method="post" class="form-stack">
+                <label>
+                    Email address
+                    <input
+                        type="email"
+                        name="email"
+                        required
+                        autocomplete="email"
+                        placeholder="you@example.com"
+                    >
+                </label>
+
+                
+<label>
+    Password
+    <div class="password-wrapper">
+        <input
+            type="password"
+            id="login-password"
+            name="password"
+            required
+            autocomplete="current-password"
+            placeholder="Enter your password"
+        >
+        <button
+            type="button"
+            class="toggle-password"
+            onclick="togglePassword('login-password', this)"
+        >Show</button>
+    </div>
+</label>
+
+
+                <button class="btn btn-dark btn-wide" type="submit">
+                    Log in <span>→</span>
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                New to ShopSphere?
+                <a href="{{ url_for('register') }}">Create an account</a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

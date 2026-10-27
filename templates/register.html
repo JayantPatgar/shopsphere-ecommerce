@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Create account{% endblock %}
+
+{% block content %}
+<section class="auth-layout">
+    <div class="auth-art">
+        <span class="eyebrow">A GOOD PLACE TO START</span>
+        <h1>Make room for things you'll love.</h1>
+        <p>Create your account and discover the collection.</p>
+        <div class="auth-art-shape shape-a"></div>
+        <div class="auth-art-shape shape-b"></div>
+        <div class="auth-art-caption">YOUR EVERYDAY MARKETPLACE ✦</div>
+    </div>
+
+    <div class="auth-panel">
+        <div class="auth-form-wrap">
+            <span class="eyebrow muted-eyebrow">JOIN THE COMMUNITY</span>
+            <h2>Create account</h2>
+            <p class="form-intro">It only takes a moment to get started.</p>
+
+            <form method="post" class="form-stack">
+                <label>
+                    Full name
+                    <input
+                        type="text"
+                        name="name"
+                        required
+                        maxlength="100"
+                        autocomplete="name"
+                        placeholder="Your name"
+                    >
+                </label>
+
+                <label>
+                    Email address
+                    <input
+                        type="email"
+                        name="email"
+                        required
+                        maxlength="160"
+                        autocomplete="email"
+                        placeholder="you@example.com"
+                    >
+                </label>
+
+                <label>
+                    Password
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="register-password"
+                            name="password"
+                            required
+                            minlength="8"
+                            autocomplete="new-password"
+                            placeholder="At least 8 characters"
+                        >
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            onclick="togglePassword('register-password', this)"
+                            aria-label="Show password"
+                        >Show</button>
+                    </div>
+                    <small>Use at least 8 characters.</small>
+                </label>
+
+                
+<label>
+    Confirm Password
+    <div class="password-wrapper">
+        <input
+            type="password"
+            id="confirm-password"
+            name="confirm_password"
+            required
+            autocomplete="new-password"
+            placeholder="Confirm your password"
+        >
+        <button
+            type="button"
+            class="toggle-password"
+            onclick="togglePassword('confirm-password', this)"
+        >Show</button>
+    </div>
+</label>
+
+
+                
+     <button class="btn btn-dark btn-wide" type="submit">
+                    Create account <span>→</span>
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                Already have an account?
+                <a href="{{ url_for('login') }}">Log in</a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}
